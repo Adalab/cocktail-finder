@@ -10,73 +10,78 @@ function fetchCoctails(searchValue){
 
         renderListCocktails(listCocktailsData);//dentro, xq fuera no tendría datos, al no existir la lista de datos
     }
-    )}
+    )
+}
 
-    function renderListCocktails(listCocktailsData){ //Pintar los elementos de la lista en el HTML: dentro del <ul>
-        let html = '';
-        for (const eachDrink of listCocktailsData){ //q recorra el listado
-            let htmlClass= '';
-            let img = 'https://via.placeholder.com/140x130';
+function renderListCocktails(listCocktailsData){ //Pintar los elementos de la lista en el HTML: dentro del <ul>
+    let html = '';
+    for (const eachDrink of listCocktailsData){ //q recorra el listado
+        let htmlClass= '';
+        let img = 'https://via.placeholder.com/140x130';
             if(eachDrink.picture != ''){ //cóctel sin imagen
                 //si eachDrink.picture es diferente de vacío, entonces:
-                img = eachDrink.picture;
+            img = eachDrink.picture;
             }
-            const favorite = listFavCocktailsData.find((favorite) => favorite.id === eachDrink.id);//busca los id q están en lista de favoritos,
-            if (favorite) {//si favorite(id) NO está vacío, existe, entonces se marca como selected
+        const favorite = listFavCocktailsData.find((favorite) => favorite.id === eachDrink.id);//busca los id q están en lista de favoritos,
+        if (favorite) {//si favorite(id) NO está vacío, existe, entonces se marca como selected
                 htmlClass = 'selected';
-            }
-            html += `<div><span><li class="js_selection ${htmlClass}" id=${eachDrink.id}>
-            <h3 class="name">${eachDrink.name}</h3>
-            <img src="${img}" alt="Imagen del cóctel" class="img">
-            </li></span></div>`
         }
-        listCocktails.innerHTML = html;
-        addEventToCoctel();       //añade los eventos a los cócteles en el momento q ya hay lista de datos
+        html += `<div><span><li class="js_selection ${htmlClass}" id=${eachDrink.id}>
+        <h3 class="name">${eachDrink.name}</h3>
+        <img src="${img}" alt="Imagen del cóctel" class="img">
+        </li></span></div>`
+    }
+    listCocktails.innerHTML = html;
+    addEventToCoctel();       //añade los eventos a los cócteles en el momento q ya hay lista de datos
     }
 
 function renderFavListCocktails(listCocktailsData){ //pinta el listado de FAVORITOS en el html
-        let html = '';
-        let img = 'https://via.placeholder.com/140x130';
-        for (const eachDrink of listCocktailsData) { //q recorra el listado
-            if(eachDrink.picture != ''){ //cóctel sin imagen
-                img = eachDrink.picture;
-            }
-            html += `<div><span class="close"><i class="fa-regular fa-circle-xmark close_btn js_cross"></i>
-            <li class='js_selection' id=${eachDrink.id}>
-            <h3 class="name">${eachDrink.name}</h3>
-            <img src="${img}" alt="Imagen del cóctel" class="img">
-            </li></span></div>`
+    let html = '';
+    let img = 'https://via.placeholder.com/140x130';
+    for (const eachDrink of listCocktailsData) { //q recorra el listado
+        if(eachDrink.picture != ''){ //cóctel sin imagen
+            img = eachDrink.picture;
         }
-        listFavCocktails.innerHTML = html;
-        addEventToCoctel();       //añade los eventos a los cócteles
+        html += `<div><span class="close"><i class="fa-regular fa-circle-xmark close_btn js_cross"></i>
+        <li class='js_selection' id=${eachDrink.id}>
+        <h3 class="name">${eachDrink.name}</h3>
+        <img src="${img}" alt="Imagen del cóctel" class="img">
+        </li></span></div>`
     }
+    listFavCocktails.innerHTML = html;
+    addEventToCoctel();       //añade los eventos a los cócteles
+}
 
 
-    //EVENTO: al hacer click se resalta la opción elegida
+    //EVENTO: al hacer click se resalta la opción elegida con el id, para q cuando se haga click se sepa a cual se está clicando
 
 function handleClick(ev){
     // ev.currentTarget.classList.toggle('selected');//para q le añada o le quite la clase selected
     const idSelected = ev.currentTarget.id;
 
     document.getElementById(idSelected).classList.toggle('selected');//añade o quita la clase por el id, no donde ocurre el evento, porq si el evento ocurre en fav no va a quitar la selección en renderlist, de esta manera quita la clase a todos los elementos q tengan el id dnd ocurre el evento.
-//FAVORITOS
-//Buscar por id en el listado de cócteles los q tienen el id con el currentTarget:
 
-//FIND(devuleve el primer objeto q cumpla la condición)
-const favCocktails = listCocktailsData.find(eachDrink => eachDrink.id === idSelected);//busca por cada coctel nos quedamos con el q el id currentTarget=id del listado data
 
-const indexCocktail = listFavCocktailsData.findIndex(eachDrink => eachDrink.id === idSelected);//si está en FAv se quite y si no está lo agregue:FINDINDEX:devuelve la posición dnd está el elemento, o -1 sino está
-//indexCocktail contiene la posición dnd está la paleta
+    //FAVORITOS
+
+    //Buscar por id en el listado de cócteles los q tienen el id con el currentTarget:
+
+    //FIND(devuleve el primer objeto q cumpla la condición)
+    const favCocktails = listCocktailsData.find(eachDrink => eachDrink.id === idSelected);//busca en renderListCocktails el primer elemento que cumpla la condición: por cada coctel me quedo con el q el "id currentTarget=id del listCocktailsData"
+
+    const indexCocktail = listFavCocktailsData.findIndex(eachDrink => eachDrink.id === idSelected);//comprobar si ya existe el favorito, para q si está en FAv se quite y si no está lo agregue FINDINDEX:devuelve la posición dnd está el elemento, o -1 sino está
+    //indexCocktail contiene la posición dnd está la paleta
 
     if(indexCocktail === -1){//no está en el listado de FAV, entonces PUSH
         listFavCocktailsData.push(favCocktails);//guardar en listado de favoritos:PUSH
+
     }else{//si está en el listado de FAVs se elimine:SPLICE: elimina un elemento a partir de una posición
 
         listFavCocktailsData.splice(indexCocktail,1);//a partir de esa posición elimina solo 1
     }
-        renderFavListCocktails(listFavCocktailsData);//F q pinta lista FAV
-        // renderListCocktails(listCocktailsData);//quita el sombreado eliminando el coctel desde fav
-        localStorage.setItem("myfavs", JSON.stringify(listFavCocktailsData));//guarda los datos en LS en el momento q se clica a FAV
+    renderFavListCocktails(listFavCocktailsData);//F q pinta lista FAV
+            // renderListCocktails(listCocktailsData);//quita el sombreado eliminando el coctel desde fav
+    localStorage.setItem("myfavs", JSON.stringify(listFavCocktailsData));//guarda los datos en LS en el momento q se clica a FAV
 }
 
 function addEventToCoctel(){//añade los eventos a los cocteles y se ejecuta dp de q se pinten
