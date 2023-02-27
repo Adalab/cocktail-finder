@@ -50,7 +50,6 @@ function renderFavListCocktails(listCocktailsData){ //pinta el listado de FAVORI
         addEventToCoctel();       //añade los eventos a los cócteles
     }
 
-    
     //EVENTO: al hacer click se resalta la opción elegida
 
 function handleClick(ev){
@@ -93,4 +92,39 @@ function handleClickBtn(ev){
     const searchValue = inputValue.value;
 
     fetchCoctails(searchValue);
+}
+
+//Function RENDERLISTCOCKTAILS con DOM
+// ul donde se va a hacer la lista:
+const listCocktails = document.querySelector('.js_list-cocktails');
+
+
+function renderListCocktails(listCocktailsData){ //Pintar los elementos de la lista en el HTML: dentro del <ul>
+    let html = '';
+    for (const eachDrink of listCocktailsData) {
+
+//crear los elementos
+        const imgElement = document.createElement('img');
+        const h3Element = document.createElement('h3');
+        const name = document.createTextNode(`${eachDrink.name}`);
+        const liElement = document.createElement('li');
+        const spanElement = document.createElement('span');
+        const divElement = document.createElement('div');
+
+//atributos
+        imgElement.setAttribute('src', `${img}` || 'https://via.placeholder.com/140x130');
+        imgElement.setAttribute('alt', 'Imagen de cócktel');
+        imgElement.setAttribute('class', 'img');
+        h3Element.setAttribute('class', 'name');
+        liElement.setAttribute('class', `js_selection ${htmlClass} id=${eachDrink.id}`)
+
+//padre
+        liElement.appendChild(imgElement);
+        h3Element.appendChild(name);
+        spanElement.appendChild(liElement);
+        divElement.appendChild(spanElement);
+        listCocktails.appendChild(divElement);
+    }
+    listCocktails.innerHTML = html;
+    addEventToCoctel();       //añade los eventos a los cócteles
 }
