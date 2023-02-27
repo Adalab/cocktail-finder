@@ -2,13 +2,13 @@ function fetchCoctails(searchValue){
     fetch(`${urlSearch}${searchValue}`)//url + búsqueda usuaria
     .then(response => response.json())
     .then(data =>{
-        listCocktailsData = data.drinks.map((drink) =>({
+        listCocktailsData = data.drinks.map((drink) => ({//datos q vienen de la API con los elementos q se necesitan
             name: drink.strDrink,
             id: drink.idDrink,
             picture: drink.strDrinkThumb,
         }))
 
-        renderListCocktails(listCocktailsData);
+        renderListCocktails(listCocktailsData);//dentro, xq fuera no tendría datos, al no existir la lista de datos
     }
     )}
 
@@ -18,10 +18,11 @@ function fetchCoctails(searchValue){
             let htmlClass= '';
             let img = 'https://via.placeholder.com/140x130';
             if(eachDrink.picture != ''){ //cóctel sin imagen
+                //si eachDrink.picture es diferente de vacío, entonces:
                 img = eachDrink.picture;
             }
-            const favorite = listFavCocktailsData.find((favorite) => favorite.id === eachDrink.id);
-            if (favorite) {
+            const favorite = listFavCocktailsData.find((favorite) => favorite.id === eachDrink.id);//busca los id q están en lista de favoritos,
+            if (favorite) {//si favorite(id) NO está vacío, existe, entonces se marca como selected
                 htmlClass = 'selected';
             }
             html += `<div><span><li class="js_selection ${htmlClass}" id=${eachDrink.id}>
@@ -30,7 +31,7 @@ function fetchCoctails(searchValue){
             </li></span></div>`
         }
         listCocktails.innerHTML = html;
-        addEventToCoctel();       //añade los eventos a los cócteles
+        addEventToCoctel();       //añade los eventos a los cócteles en el momento q ya hay lista de datos
     }
 
 function renderFavListCocktails(listCocktailsData){ //pinta el listado de FAVORITOS en el html
@@ -49,6 +50,7 @@ function renderFavListCocktails(listCocktailsData){ //pinta el listado de FAVORI
         listFavCocktails.innerHTML = html;
         addEventToCoctel();       //añade los eventos a los cócteles
     }
+
 
     //EVENTO: al hacer click se resalta la opción elegida
 
@@ -79,7 +81,7 @@ const indexCocktail = listFavCocktailsData.findIndex(eachDrink => eachDrink.id =
 
 function addEventToCoctel(){//añade los eventos a los cocteles y se ejecuta dp de q se pinten
 
-    const selectedItems  = document.querySelectorAll('.js_selection');//selecciona todos los <li> q tengan la clase js_selection (selección de la usuaria)
+    const selectedItems = document.querySelectorAll('.js_selection');//selecciona TODOS los <li> q tengan la clase js_selection (selección de la usuaria)
 
     for (const eachItem of selectedItems) {
         eachItem.addEventListener('click', handleClick);
