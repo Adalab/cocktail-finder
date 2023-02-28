@@ -4,6 +4,7 @@ const listCocktails = document.querySelector('.js_list-cocktails');
 const listFavCocktails = document.querySelector('.js_list-cocktails_favorites');
 const searchBtn = document.querySelector('.js_btn');
 const resetBtn = document.querySelector('.js_reset');
+const logBtn = document.querySelector('.js_log_btn');
 const inputValue = document.querySelector('.js_input');
 const urlSearch = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
 const cocktailStore = JSON.parse(localStorage.getItem("myfavs"));
@@ -19,6 +20,7 @@ function fetchCoctails(searchValue){
                 name: drink.strDrink,
                 id: drink.idDrink,
                 picture: drink.strDrinkThumb,
+                instructions: drink.strInstructions,
             }))
             renderListCocktails(listCocktailsData);
         })
@@ -39,6 +41,7 @@ function renderListCocktails(listCocktailsData){
         }
         html += `<div><span><li class="js_selection ${htmlClass}" id=${eachDrink.id}>
         <h3 class="name">${eachDrink.name}</h3>
+        <p class='instructions'>${eachDrink.instructions}</p>
         <img src="${img}" alt="Imagen del cóctel" class="img">
         </li></span></div>`;
     }
@@ -95,6 +98,17 @@ function handleClickBtn(ev){
     const searchValue = inputValue.value;
     fetchCoctails(searchValue);
 }
+
+//Botón LOG
+function handleClicklogBtn(ev){
+    ev.preventDefault();
+
+    for (const coctail of listCocktailsData) {
+        console.log(coctail.name);
+    }
+}
+
+logBtn.addEventListener('click', handleClicklogBtn)
 // Renderiza la lista de fav con los datos del LS
 if (cocktailStore){
     listFavCocktailsData = cocktailStore;

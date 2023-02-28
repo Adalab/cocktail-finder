@@ -7,6 +7,7 @@ function fetchCoctails(searchValue){
                 name: drink.strDrink,
                 id: drink.idDrink,
                 picture: drink.strDrinkThumb,
+                instructions: drink.strInstructions,
             }))
             renderListCocktails(listCocktailsData);
         })
@@ -27,6 +28,7 @@ function renderListCocktails(listCocktailsData){
         }
         html += `<div><span><li class="js_selection ${htmlClass}" id=${eachDrink.id}>
         <h3 class="name">${eachDrink.name}</h3>
+        <p class='instructions'>${eachDrink.instructions}</p>
         <img src="${img}" alt="Imagen del cóctel" class="img">
         </li></span></div>`;
     }
@@ -83,3 +85,14 @@ function handleClickBtn(ev){
     const searchValue = inputValue.value;
     fetchCoctails(searchValue);
 }
+
+//Botón LOG
+function handleClicklogBtn(ev){
+    ev.preventDefault();
+
+    for (const coctail of listCocktailsData) {
+        console.log(coctail.name);
+    }
+}
+
+logBtn.addEventListener('click', handleClicklogBtn)
