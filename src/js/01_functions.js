@@ -59,8 +59,7 @@ function handleClick(ev){
     // ev.currentTarget.classList.toggle('selected');//para q le añada o le quite la clase selected
     const idSelected = ev.currentTarget.id;
 
-    document.getElementById(idSelected).classList.toggle('selected');//añade o quita la clase por el id, no donde ocurre el evento, porq si el evento ocurre en fav no va a quitar la selección en renderlist, de esta manera quita la clase a todos los elementos q tengan el id dnd ocurre el evento.
-
+    document.getElementById(idSelected).classList.toggle('selected');//añade o quita la clase por el id, no donde ocurre el evento, porq si el evento ocurre en fav no va a quitar la selección en renderlist, de esta manera quita la clase a todos los elementos q tengan el id dnd ocurre el evento, xq solo se desmarcaba de render clicando en render y no en favoritos, al tener el mismo id se desactiva en ambos lados
 
     //FAVORITOS
 
